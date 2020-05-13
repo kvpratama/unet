@@ -4,6 +4,7 @@ results/
 build/
 dist/
 data/
+.idea/
 saved_models/
 torch.egg-info/
 */**/__pycache__
