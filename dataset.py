@@ -6,7 +6,6 @@ from torch.utils.data import Dataset
 from PIL import Image
 import torchvision.transforms as transforms
 import pandas as pd
-from math import ceil, floor
 
 import pdb
 
@@ -17,11 +16,13 @@ class ImageDataset(Dataset):
         mask_files = sorted(glob.glob(opt.mask_dir + "/*.*"))
 
         if opt.split_dataset:
+            print('Generating new train/test split')
             table_df = pd.DataFrame(list(zip(data_files, mask_files)), columns=['data_files', 'mask_files'])
             mask = np.random.rand(len(table_df)) < 0.8
             table_df['test'] = mask
             table_df.to_csv(os.path.dirname(os.path.dirname(opt.data_dir)) + '/train_test_split.csv')
         else:
+            print('Using existing train/test split')
             table_df = pd.read_csv(os.path.dirname(os.path.dirname(opt.data_dir)) + '/train_test_split.csv')
 
         if opt.test:

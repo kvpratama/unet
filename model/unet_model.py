@@ -2,15 +2,11 @@ from .unet_parts import *
 
 
 class UNet(nn.Module):
-    def __init__(self, n_channels, n_classes, bilinear=True):
+    def __init__(self, in_channels, n_classes, bilinear=True):
         super(UNet, self).__init__()
-        self.n_channels = n_channels
-        self.n_classes = n_classes
-        self.bilinear = bilinear
-
         n_filter = [64, 128, 256, 512, 1024]  # [32, 64, 128, 256, 512]  #
 
-        self.inc = DoubleConv(n_channels, n_filter[0])
+        self.inc = DoubleConv(in_channels, n_filter[0])
         self.down1 = Down(n_filter[0], n_filter[1])
         self.down2 = Down(n_filter[1], n_filter[2])
         self.down3 = Down(n_filter[2], n_filter[3])
