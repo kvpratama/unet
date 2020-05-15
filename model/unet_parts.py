@@ -87,7 +87,7 @@ class UpConv(nn.Module):
         super(UpConv, self).__init__()
         self.up = nn.Sequential(
             nn.Upsample(scale_factor=2),
-            nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=True),
+            nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True)
         )
@@ -101,17 +101,17 @@ class AttentionBlock(nn.Module):
     def __init__(self, f_g, f_l, f_int):
         super(AttentionBlock, self).__init__()
         self.W_g = nn.Sequential(
-            nn.Conv2d(f_g, f_int, kernel_size=1, stride=1, padding=0, bias=True),
+            nn.Conv2d(f_g, f_int, kernel_size=1, stride=1, padding=0),
             nn.BatchNorm2d(f_int)
         )
 
         self.W_x = nn.Sequential(
-            nn.Conv2d(f_l, f_int, kernel_size=1, stride=1, padding=0, bias=True),
+            nn.Conv2d(f_l, f_int, kernel_size=1, stride=1, padding=0),
             nn.BatchNorm2d(f_int)
         )
 
         self.psi = nn.Sequential(
-            nn.Conv2d(f_int, 1, kernel_size=1, stride=1, padding=0, bias=True),
+            nn.Conv2d(f_int, 1, kernel_size=1, stride=1, padding=0),
             nn.BatchNorm2d(1),
             nn.Sigmoid()
         )
@@ -124,3 +124,22 @@ class AttentionBlock(nn.Module):
         psi = self.relu(g1 + x1)
         resampler = self.psi(psi)
         return x * resampler
+
+
+class RecurrentConv(nn.Module):
+    def __init__(self, in_channels, out_channels, t=2):
+        super(RecurrentConv, self).__init__()
+        self.t = t
+        self.inconv = nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=1, padding=0)
+        self.conv = nn.Sequential(
+            nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(inplace=True)
+        )
+
+    def forward(self, x):
+        x_in = self.inconv(x)
+        x_out = self.conv(x_in)
+        for i in range(self.t):
+            x_out = self.conv(x_in + x_out)
+        return x_out
