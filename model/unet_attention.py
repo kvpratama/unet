@@ -38,22 +38,22 @@ class UNetAttention(nn.Module):
         x4 = self.down3(x3)
         x5 = self.down4(x4)
 
-        d5 = self.upconv1(x5, x4)
+        d5 = self.upconv1(x5, pad_like=x4)
         x4 = self.att1(g=d5, x=x4)
         d5 = torch.cat((x4, d5), dim=1)
         d5 = self.double_conv1(d5)
 
-        d4 = self.upconv2(d5, x3)
+        d4 = self.upconv2(d5, pad_like=x3)
         x3 = self.att2(g=d4, x=x3)
         d4 = torch.cat((x3, d4), dim=1)
         d4 = self.double_conv2(d4)
 
-        d3 = self.upconv3(d4, x2)
+        d3 = self.upconv3(d4, pad_like=x2)
         x2 = self.att3(g=d3, x=x2)
         d3 = torch.cat((x2, d3), dim=1)
         d3 = self.double_conv3(d3)
 
-        d2 = self.upconv4(d3, x1)
+        d2 = self.upconv4(d3, pad_like=x1)
         x1 = self.att4(g=d2, x=x1)
         d2 = torch.cat((x1, d2), dim=1)
         x = self.double_conv4(d2)

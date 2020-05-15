@@ -92,9 +92,9 @@ class UpConv(nn.Module):
             nn.ReLU(inplace=True)
         )
 
-    def forward(self, x1, x2):
+    def forward(self, x1, pad_like=None):
         x1 = self.up(x1)
-        return pad_diff(x1, x2)
+        return pad_diff(x1, pad_like)
 
 
 class AttentionBlock(nn.Module):
