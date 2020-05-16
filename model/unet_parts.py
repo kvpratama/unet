@@ -126,9 +126,9 @@ class AttentionBlock(nn.Module):
         return x * resampler
 
 
-class RecurrentBlock(nn.Module):
+class SingleConv(nn.Module):
     def __init__(self, out_channels):
-        super(RecurrentBlock, self).__init__()
+        super(SingleConv, self).__init__()
         self.conv = nn.Sequential(
             nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(out_channels),
@@ -144,11 +144,35 @@ class RecurrentConv(nn.Module):
         super(RecurrentConv, self).__init__()
         self.t = t
         self.inconv = nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=1, padding=0)
-        self.rec_block = RecurrentBlock(out_channels)
+        self.single_conv = SingleConv(out_channels)
 
     def forward(self, x):
         x_in = self.inconv(x)
-        x_out = self.rec_block(x_in)
+        x_out = self.single_conv(x_in)
         for i in range(self.t):
-            x_out = self.rec_block(x_in + x_out)
+            x_out = self.single_conv(x_in + x_out)
         return x_out
+
+
+class R2UNetBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, t=2):
+        super(R2UNetBlock, self).__init__()
+        self.t = t
+        self.inconv = nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=1, padding=0)
+        self.single_conv1 = SingleConv(out_channels)
+        self.single_conv2 = SingleConv(out_channels)
+
+    def forward(self, x):
+        x_in = self.inconv(x)
+
+        # First Recurrent Block
+        x_r1 = self.single_conv1(x_in)
+        for i in range(self.t):
+            x_r1 = self.single_conv1(x_in + x_r1)
+
+        # Second Recurrent Block
+        x_out = self.single_conv2(x_r1)
+        for i in range(self.t):
+            x_out = self.single_conv2(x_r1 + x_out)
+
+        return x_in + x_out  # Residual + Recurrent
