@@ -47,9 +47,9 @@ if __name__ == '__main__':
 
     if opt.epoch != 0:
         # Load pretrained models
-        gen_state = torch.load("%s/%d.pth" % (opt.checkpoint_dir, opt.epoch))
-        model.load_state_dict(gen_state.get('weight', False))
-        opt = gen_state.get('opt')
+        state = torch.load("%s/%d.pth" % (opt.checkpoint_dir, opt.epoch))
+        model.load_state_dict(state.get('weight', False))
+        opt = state.get('opt')
 
     if opt.n_class > 1:
         criterion = nn.CrossEntropyLoss()
@@ -73,8 +73,8 @@ if __name__ == '__main__':
 
         for i, imgs in enumerate(dataloader):
             # Configure model input
-            data = Variable(imgs["lr"].type(Tensor))
-            true_mask = Variable(imgs["hr"].type(Tensor))
+            data = Variable(imgs["input"].type(Tensor))
+            true_mask = Variable(imgs["gt"].type(Tensor))
 
             predict_mask = model(data)
 

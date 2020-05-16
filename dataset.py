@@ -52,7 +52,7 @@ class ImageDataset(Dataset):
         img_tensor = self.transform(img)
         mask_tensor = self.transform(mask)
 
-        return {"lr": img_tensor, "hr": mask_tensor}
+        return {"input": img_tensor, "gt": mask_tensor, "filepath": self.data_files[index]}
 
     def __len__(self):
         return len(self.data_files)
