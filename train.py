@@ -19,7 +19,7 @@ if __name__ == '__main__':
     parser.add_argument("--data_dir", type=str, default="./data/train/", help="path to data dir")
     parser.add_argument("--mask_dir", type=str, default="./data/train_masks/", help="path to mask dir")
     parser.add_argument("--epoch", type=int, default=0, help="epoch to start training from")
-    parser.add_argument("--n_epochs", type=int, default=3, help="number of epochs of training")
+    parser.add_argument("--n_epochs", type=int, default=50, help="number of epochs of training")
     parser.add_argument("--batch_size", type=int, default=1, help="size of the batches")
     parser.add_argument("--lr", type=float, default=0.0002, help="adam: learning rate")
     parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
@@ -34,6 +34,12 @@ if __name__ == '__main__':
     parser.add_argument("--test", action='store_true', help="Run model on test set")
     parser.add_argument("--split_dataset", action='store_true', help="Split dataset into train and test")
     opt = parser.parse_args()
+
+    opt_dict = vars(opt)
+    with open(os.path.join(opt.checkpoint_dir, 'opt.csv'), 'w') as f:
+        for key in opt_dict.keys():
+            f.write("%s,%s\n" % (key, opt_dict[key]))
+
     print(opt)
 
     os.makedirs("%s/" % opt.checkpoint_dir, exist_ok=True)
