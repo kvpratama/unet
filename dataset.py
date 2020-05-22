@@ -38,7 +38,7 @@ class ImageDataset(Dataset):
         self.transform = transforms.Compose(
             [
                 transforms.Resize((int(h * opt.scale), int(w * opt.scale)), Image.BICUBIC),
-                transforms.ToTensor(),
+                # transforms.ToTensor(),
                 # transforms.Normalize(mean, std),
             ]
         )
@@ -49,10 +49,14 @@ class ImageDataset(Dataset):
         img = Image.open(self.data_files[index])
         mask = Image.open(self.mask_files[index])
 
-        img_tensor = self.transform(img)
-        mask_tensor = self.transform(mask)
+        img_transform = self.transform(img)
+        mask_transform = self.transform(mask)
 
-        return {"input": img_tensor, "gt": mask_tensor, "filepath": self.data_files[index]}
+        # HWC to CHW
+        img_transform = np.array(img_transform).transpose((2, 0, 1)) / 255
+        mask_transform = np.array(mask_transform)[np.newaxis, :]
+
+        return {"input": img_transform, "gt": mask_transform, "filepath": self.data_files[index]}
 
     def __len__(self):
         return len(self.data_files)
