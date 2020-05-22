@@ -74,4 +74,5 @@ if __name__ == '__main__':
 
             table.append(row)
     table_df = pd.DataFrame(table, columns=['Filepath', 'Checkpoint', 'Accuracy', 'Sensitivity', 'Specificity', 'Precision', 'F1', 'Jaccard', 'Dice'])
+    table_df['Mean'] = table_df[['Accuracy', 'Sensitivity', 'Specificity', 'Precision', 'F1', 'Jaccard', 'Dice']].mean(axis=1)
     table_df.groupby('Checkpoint').mean().to_csv(os.path.join(opt.checkpoint_dir, 'evaluation.csv'))
