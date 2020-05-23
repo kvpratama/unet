@@ -8,7 +8,6 @@ class R2UNet(nn.Module):
         n_filter = [64, 128, 256, 512, 1024]  # [32, 64, 128, 256, 512]  #
 
         self.maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.upsample = nn.Upsample(scale_factor=2)
 
         self.r2down1 = R2UNetBlock(in_channels, n_filter[0], t)
         self.r2down2 = R2UNetBlock(n_filter[0], n_filter[1], t)

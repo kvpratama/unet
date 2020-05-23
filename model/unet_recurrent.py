@@ -8,7 +8,6 @@ class RecurrentUNet(nn.Module):
         n_filter = [64, 128, 256, 512, 1024]  # [32, 64, 128, 256, 512]  #
 
         self.maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.upsample = nn.Upsample(scale_factor=2)
 
         self.rec_down1 = RecurrentConv(in_channels, n_filter[0], t)
         self.rec_down2 = RecurrentConv(n_filter[0], n_filter[1], t)
