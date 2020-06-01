@@ -35,14 +35,14 @@ if __name__ == '__main__':
     parser.add_argument("--split_dataset", action='store_true', help="Split dataset into train and test")
     opt = parser.parse_args()
 
+    os.makedirs("%s/" % opt.checkpoint_dir, exist_ok=True)
+
     opt_dict = vars(opt)
     with open(os.path.join(opt.checkpoint_dir, 'opt.csv'), 'w') as f:
         for key in opt_dict.keys():
             f.write("%s,%s\n" % (key, opt_dict[key]))
 
     print(opt)
-
-    os.makedirs("%s/" % opt.checkpoint_dir, exist_ok=True)
 
     cuda = torch.cuda.is_available()
 
