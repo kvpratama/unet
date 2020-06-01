@@ -32,7 +32,6 @@ if __name__ == '__main__':
     parser.add_argument("--checkpoint_dir", type=str, default="./saved_models/", help="checkpoint directory")
     parser.add_argument("--checkpoint_interval", type=int, default=1, help="interval between model checkpoints")
     parser.add_argument("--test", action='store_true', help="Run model on test set")
-    parser.add_argument("--split_dataset", action='store_true', help="Split dataset into train and test")
     opt = parser.parse_args()
 
     os.makedirs("%s/" % opt.checkpoint_dir, exist_ok=True)
