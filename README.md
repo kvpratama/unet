@@ -7,16 +7,25 @@ The original U-Net model
 **U-Net: Convolutional Networks for Biomedical Image Segmentation**
 
 https://arxiv.org/abs/1505.04597 
+<p align="left">
+  <img src="https://github.com/kvpratama/unet/blob/master/assets/unet.png" width="500">
+</p>
 
 ### U-Net Attention
 **Attention U-Net: Learning Where to Look for the Pancreas**
 
 https://arxiv.org/abs/1505.04597 
+<p align="left">
+  <img src="https://github.com/kvpratama/unet/blob/master/assets/unet_attention.png" width="500">
+</p>
 
 ### RU-Net and R2U-Net
 **Recurrent Residual Convolutional Neural Network based on U-Net (R2U-Net) for Medical Image Segmentation**
 
 https://arxiv.org/abs/1802.06955
+<p align="left">
+  <img src="https://github.com/kvpratama/unet/blob/master/assets/unet_recurrent.png" width="800">
+</p>
 
 
 ## Run The Training and Evaluation
