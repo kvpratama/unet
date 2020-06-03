@@ -52,9 +52,11 @@ if __name__ == '__main__':
 
     if opt.epoch != 0:
         # Load pretrained models
+        temp_opt = opt
         state = torch.load("%s/%d.pth" % (opt.checkpoint_dir, opt.epoch))
         model.load_state_dict(state.get('weight', False))
         opt = state.get('opt')
+        opt.epoch = temp_opt.epoch
 
     if opt.n_class > 1:
         criterion = nn.CrossEntropyLoss()
