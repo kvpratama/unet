@@ -11,6 +11,11 @@ import load_model
 import load_dataset
 
 import pandas as pd
+import numpy as np
+
+import matplotlib.pyplot as plt
+import pdb
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -79,6 +84,12 @@ if __name__ == '__main__':
             # Configure model input
             data = Variable(imgs["input"].type(Tensor))
             true_mask = Variable(imgs["gt"].type(Tensor))
+
+            # plt.subplot(1, 2, 1)
+            # plt.imshow(np.transpose(data.cpu().numpy()[0], axes=[1, 2, 0]))
+            # plt.subplot(1, 2, 2)
+            # plt.imshow(np.transpose(true_mask.cpu().numpy()[0,0], axes=[0,1]))
+            # plt.show()
 
             predict_mask = model(data)
 

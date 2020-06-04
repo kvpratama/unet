@@ -14,9 +14,7 @@ class CarvanaDataset(Dataset):
     def __init__(self, opt):
 
         data_files = sorted(glob.glob(os.path.join("./data", opt.dataset_name, "train/*.*")))
-        # data_files = sorted(glob.glob(opt.data_dir + "/*.*"))
         mask_files = sorted(glob.glob(os.path.join("./data", opt.dataset_name, "train_masks/*.*")))
-        # mask_files = sorted(glob.glob(opt.mask_dir + "/*.*"))
 
         try:
             table_df = pd.read_csv(os.path.dirname(os.path.join("./data", opt.dataset_name, "train")) + '/train_test_split.csv')
@@ -36,7 +34,7 @@ class CarvanaDataset(Dataset):
             self.mask_files = table_df[table_df.test].mask_files.tolist()
 
         img = Image.open(self.data_files[0])
-        h, w = img.size
+        w, h = img.size
 
         self.transform = transforms.Compose(
             [
