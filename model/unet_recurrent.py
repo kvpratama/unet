@@ -15,16 +15,16 @@ class RecurrentUNet(nn.Module):
         self.rec_down4 = RecurrentConv(n_filter[2], n_filter[3], t)
         self.rec_down5 = RecurrentConv(n_filter[3], n_filter[4], t)
 
-        self.up5 = UpConv(n_filter[4], n_filter[3])
+        self.up5 = UpConv(n_filter[4], n_filter[3], deconv=True)
         self.rec_up5 = RecurrentConv(n_filter[4], n_filter[3], t)
 
-        self.up4 = UpConv(n_filter[3], n_filter[2])
+        self.up4 = UpConv(n_filter[3], n_filter[2], deconv=True)
         self.rec_up4 = RecurrentConv(n_filter[3], n_filter[2], t)
 
-        self.up3 = UpConv(n_filter[2], n_filter[1])
+        self.up3 = UpConv(n_filter[2], n_filter[1], deconv=True)
         self.rec_up3 = RecurrentConv(n_filter[2], n_filter[1], t)
 
-        self.up2 = UpConv(n_filter[1], n_filter[0])
+        self.up2 = UpConv(n_filter[1], n_filter[0], deconv=True)
         self.rec_up2 = RecurrentConv(n_filter[1], n_filter[0], t)
 
         self.outconv = nn.Conv2d(64, n_classes, kernel_size=1, stride=1, padding=0)

@@ -83,17 +83,20 @@ def pad_diff(x1, x2):
 
 
 class UpConv(nn.Module):
-    def __init__(self, in_channels, out_channels):
+    def __init__(self, in_channels, out_channels, deconv=False):
         super(UpConv, self).__init__()
-        self.up = nn.Sequential(
-            nn.Upsample(scale_factor=2),
-            nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(out_channels),
-            nn.ReLU(inplace=True)
-        )
+        modules = []
 
-    def forward(self, x1, pad_like=None):
-        x1 = self.up(x1)
+        if deconv:
+            modules.append(nn.ConvTranspose2d(in_channels, in_channels // 2, kernel_size=3, stride=2, padding=1, output_padding=1))
+        else:
+            modules += [nn.Upsample(scale_factor=2), nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=1, padding=1)]
+
+        modules += [nn.BatchNorm2d(out_channels), nn.ReLU(inplace=True)]
+        self.up = nn.Sequential(*modules)
+
+    def forward(self, x, pad_like=None):
+        x1 = self.up(x)
         return pad_diff(x1, pad_like)
 
 

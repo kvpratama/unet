@@ -1,4 +1,5 @@
 import argparse
+import os
 
 import torch
 import torch.nn as nn
@@ -7,17 +8,13 @@ from torch.utils.data import DataLoader
 from torch.autograd import Variable
 
 import load_model
-from dataset import *
+import load_dataset
 
 import pandas as pd
 
-import matplotlib.pyplot as plt
-import pdb
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", type=str, default="./data/train/", help="path to data dir")
-    parser.add_argument("--mask_dir", type=str, default="./data/train_masks/", help="path to mask dir")
+    parser.add_argument("--dataset_name", type=str, default="carvana", help="dataset name")
     parser.add_argument("--epoch", type=int, default=0, help="epoch to start training from")
     parser.add_argument("--n_epochs", type=int, default=50, help="number of epochs of training")
     parser.add_argument("--batch_size", type=int, default=1, help="size of the batches")
@@ -66,7 +63,7 @@ if __name__ == '__main__':
     optimizer = optim.AdamW(model.parameters())
 
     dataloader = DataLoader(
-        ImageDataset(opt),
+        load_dataset.get_dataset(opt),
         batch_size=opt.batch_size,
         shuffle=True,
         num_workers=opt.n_cpu,
