@@ -10,7 +10,7 @@ import pandas as pd
 import pdb
 
 
-class ImageDataset(Dataset):
+class IsicDataset(Dataset):
     def __init__(self, opt):
         data_files = sorted(glob.glob(opt.data_dir + "/*.*"))
         mask_files = sorted(glob.glob(opt.mask_dir + "/*.*"))
@@ -42,21 +42,3 @@ class ImageDataset(Dataset):
                 # transforms.Normalize(mean, std),
             ]
         )
-
-    def __getitem__(self, index):
-        assert os.path.basename(self.data_files[index][:-4]) == os.path.basename(self.mask_files[index][:-9])
-
-        img = Image.open(self.data_files[index])
-        mask = Image.open(self.mask_files[index])
-
-        img_transform = self.transform(img)
-        mask_transform = self.transform(mask)
-
-        # HWC to CHW
-        img_transform = np.array(img_transform).transpose((2, 0, 1)) / 255
-        mask_transform = np.array(mask_transform)[np.newaxis, :]
-
-        return {"input": img_transform, "gt": mask_transform, "filepath": self.data_files[index]}
-
-    def __len__(self):
-        return len(self.data_files)
