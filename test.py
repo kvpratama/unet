@@ -9,16 +9,14 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 
 import load_model
+import load_dataset
 import evaluation_metrics
-from dataset import *
 
 import matplotlib.pyplot as plt
 import pdb
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", type=str, default="./data/train/", help="path to data dir")
-    parser.add_argument("--mask_dir", type=str, default="./data/train_masks/", help="path to mask dir")
     parser.add_argument("--checkpoint_dir", type=str, default="./saved_models/", help="checkpoint directory")
     opt = parser.parse_args()
     print(opt)
@@ -37,12 +35,10 @@ if __name__ == '__main__':
         if cuda:
             model.cuda()
 
-        saved_opt.data_dir = opt.data_dir
-        saved_opt.mask_dir = opt.mask_dir
         saved_opt.test = True
 
         dataloader = DataLoader(
-            ImageDataset(saved_opt),
+            load_dataset.get_dataset(saved_opt),
             batch_size=saved_opt.batch_size,
             shuffle=False,
             num_workers=saved_opt.n_cpu,
