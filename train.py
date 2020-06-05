@@ -9,6 +9,7 @@ from torch.autograd import Variable
 
 import load_model
 import load_dataset
+from model.unet_parts import BCEDiceLoss
 
 import pandas as pd
 import numpy as np
@@ -34,6 +35,7 @@ if __name__ == '__main__':
     parser.add_argument("--checkpoint_dir", type=str, default="./saved_models/", help="checkpoint directory")
     parser.add_argument("--checkpoint_interval", type=int, default=1, help="interval between model checkpoints")
     parser.add_argument("--test", action='store_true', help="Run model on test set")
+    parser.add_argument("--deep_supervision", action='store_true', help="Deep supervision for UNet++ model")
     opt = parser.parse_args()
 
     os.makedirs("%s/" % opt.checkpoint_dir, exist_ok=True)
@@ -60,7 +62,9 @@ if __name__ == '__main__':
         opt = state.get('opt')
         opt.epoch = temp_opt.epoch
 
-    if opt.n_class > 1:
+    if opt.model_name == 'unet_nested':
+        criterion = BCEDiceLoss()
+    elif opt.n_class > 1:
         criterion = nn.CrossEntropyLoss()
     else:
         criterion = nn.BCEWithLogitsLoss()
@@ -93,7 +97,14 @@ if __name__ == '__main__':
 
             predict_mask = model(data)
 
-            loss = criterion(predict_mask, true_mask)
+            if opt.deep_supervision:
+                loss = 0
+                for output in predict_mask:
+                    loss += criterion(output, true_mask)
+                loss /= len(predict_mask)
+            else:
+                loss = criterion(predict_mask, true_mask)
+
             epoch_loss += loss.item()
 
             optimizer.zero_grad()
