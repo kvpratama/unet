@@ -53,7 +53,10 @@ if __name__ == '__main__':
             model.eval()
             with torch.no_grad():
                 predicted_mask = model(data)
-                if saved_opt.n_class > 1:
+                if saved_opt.deep_supervision:
+                    mean = torch.mean(torch.stack(predicted_mask), dim=0)
+                    predicted_mask = torch.sigmoid(mean)
+                elif saved_opt.n_class > 1:
                     predicted_mask = F.softmax(predicted_mask, dim=1)
                 else:
                     predicted_mask = torch.sigmoid(predicted_mask)

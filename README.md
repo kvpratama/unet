@@ -44,7 +44,7 @@ This dataset can be downloaded from https://www.kaggle.com/c/carvana-image-maski
 
 It contains 5087 images that I split into 4028 training data and 1059 test data
 
-To train, put the data in the following structure
+To train with this dataset, put it in the following structure
 ```
 data
 └── carvana
@@ -58,12 +58,13 @@ data
 |U-Net Attention  	|**0.998282434**|**0.996596236**|0.9986885      |0.99514082     |0.995856454    |0.991767802    |0.995856954  	    
 |RU-Net  	        |0.993043424    |0.988357045    |0.993877302    |0.979795889    |0.98386901     |0.968556633    |0.98386951
 |R2U-Net  	        |0.98894883     |0.966178541    |0.99462        |0.981679731    |0.972566577    |0.948562334    |0.972567077
+|UNet++  	        |0.989049781    |0.986223035    |0.989697149    |0.96720814     |0.975540318    |0.955095928    |0.975540817
 
 
 #### ISIC 2018: Skin Lesion Analysis Towards Melanoma Detection
 This dataset can be downloaded from https://challenge2018.isic-archive.com/task1/
 
-To train, put the data in the following structure
+To train with this dataset, put it in the following structure
 ```
 data
 └── isic
@@ -76,4 +77,5 @@ data
 |U-Net  	        |0.864781232    |0.77527608     |0.928438174    |**0.82717248** |0.723329646    |0.61480043     |0.723330083    
 |U-Net Attention  	|0.873962586    |**0.800954378**|0.92850901     |0.815270585    |**0.737713671**|0.629463975    |**0.737714114**  	    
 |RU-Net  	        |**0.879459107**|0.79983796     |0.935030489    |0.797679773    |0.735016992    |**0.629916732**|0.735017438
-|R2U-Net  	        |0.870233406    |0.76183223     |**0.936396868**|0.824444721    |0.714812878    |0.611360368    |0.714813307
+|R2U-Net  	        |0.870233406    |0.76183223     |0.936396868    |0.824444721    |0.714812878    |0.611360368    |0.714813307
+|UNet++  	        |0.844096655    |0.675198708    |**0.940053562**|0.814203544    |0.645812596    |0.546377165    |0.64581299
