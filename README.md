@@ -14,7 +14,7 @@ https://arxiv.org/abs/1505.04597
 ### U-Net Attention
 **Attention U-Net: Learning Where to Look for the Pancreas**
 
-https://arxiv.org/abs/1505.04597 
+https://arxiv.org/abs/1804.03999
 <p align="left">
   <img src="https://github.com/kvpratama/unet/blob/master/assets/unet_attention.png" width="500">
 </p>
@@ -25,6 +25,14 @@ https://arxiv.org/abs/1505.04597
 https://arxiv.org/abs/1802.06955
 <p align="left">
   <img src="https://github.com/kvpratama/unet/blob/master/assets/unet_recurrent.png" width="800">
+</p>
+
+### UNet++
+**UNet++: A Nested U-Net Architecture for Medical Image Segmentation**
+
+https://arxiv.org/pdf/1807.10165
+<p align="left">
+  <img src="https://github.com/kvpratama/unet/blob/master/assets/unet_nested.png" width="500">
 </p>
 
 
